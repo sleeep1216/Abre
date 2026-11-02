@@ -1,0 +1,17 @@
+{
+  "name": "Abre — 从真实场景开口说西班牙语",
+  "short_name": "Abre",
+  "description": "面向中文母语者的阿根廷/拉美西班牙语场景化学习工具：真实场景对话、字母与数字发音练习、错题本。",
+  "lang": "zh-CN",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ECE7D6",
+  "theme_color": "#30493B",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
