@@ -3522,6 +3522,8 @@ function sttStop(){
 // Android 原生识别回调
 window.__onSTTResult=function(json){ try{ const a=JSON.parse(json); if(window.__sttDone)window.__sttDone(true,a); }catch(e){ if(window.__sttDone)window.__sttDone(true,[String(json)]); } };
 window.__onSTTError=function(msg){ if(window.__sttDone)window.__sttDone(false,String(msg||'error')); };
+// Vosk 离线模型下载/加载进度：在当前反馈区显示状态（不结束本次识别）
+window.__onSTTStatus=function(msg){ try{ const el=document.getElementById(window.__micFeedbackId||''); if(el) el.innerHTML='<div class="practice-feedbk no"><span class="verdict">'+String(msg)+'</span></div>'; }catch(e){} };
 
 function pnorm(s){ return String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9ñ ]/g,'').replace(/\s+/g,' ').trim(); }
 function plev(a,b){ a=pnorm(a); b=pnorm(b); const m=a.length,n=b.length,d=[]; for(let i=0;i<=m;i++)d[i]=[i]; for(let j=0;j<=n;j++)d[0][j]=j; for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1)); return d[m][n]; }
@@ -3670,6 +3672,7 @@ function renderLifeRead(fb){
 }
 function startLifeRead(){
   if(_recognizing){ sttStop(); return; }   // 聆听中再次点击 = 结束聆听
+  window.__micFeedbackId='lifeFeedback';
   const btn=document.getElementById('micBtn'), fb=document.getElementById('lifeFeedback');
   if(fb)fb.innerHTML=''; if(btn){ btn.classList.add('recording'); btn.innerHTML='&#9209;&#65039; 结束聆听'; }
   // 先让「聆听中」渲染出来，再启动识别（否则同步报错时用户看不到状态）
@@ -3678,6 +3681,7 @@ function startLifeRead(){
       const f=document.getElementById('lifeFeedback');
       if(err==='not-allowed'||err==='service-not-allowed'){ if(f)f.innerHTML='<div class="practice-feedbk no"><span class="verdict">需要麦克风权限</span><br>请在浏览器地址栏允许麦克风后重试。</div>'; }
       else if(err==='no-speech'){ if(f)f.innerHTML='<div class="practice-feedbk no"><span class="verdict">没听清，请再读一次</span></div>'; }
+      else if(err && err.indexOf('model-')===0){ if(f)f.innerHTML='<div class="practice-feedbk no"><span class="verdict">离线语音模型准备失败</span><br>首次使用需联网下载约 40MB 模型，请检查网络后重试。</div>'; }
       else { if(f)f.innerHTML='<div class="practice-feedbk no"><span class="verdict">当前环境不支持语音识别</span><br>'+sttUnsupportedMsg()+'</div>'; }
     }));
 }
@@ -3800,6 +3804,7 @@ function renderPracticeCard(feedbackHtml){
 function startListen(){
   if(_recognizing){ sttStop(); return; }   // 聆听中再次点击 = 结束聆听
   const t=practiceTarget; if(!t)return;
+  window.__micFeedbackId='practiceFeedback';
   const btn=document.getElementById('micBtn'); const fb=document.getElementById('practiceFeedback');
   if(fb)fb.innerHTML=''; if(btn){ btn.classList.add('recording'); btn.innerHTML='&#9209;&#65039; 结束聆听'; }
   deferStt(()=>sttStart('es-AR', alts=>{
@@ -3810,6 +3815,7 @@ function startListen(){
     const f=document.getElementById('practiceFeedback');
     if(err==='not-allowed'||err==='service-not-allowed'){ if(f)f.innerHTML='<div class="practice-feedbk no"><span class="verdict">需要麦克风权限</span><br>请在系统/浏览器中允许使用麦克风后重试。</div>'; }
     else if(err==='no-speech'){ if(f)f.innerHTML='<div class="practice-feedbk no"><span class="verdict">没听清</span><br>没有检测到声音，请靠近麦克风再读一次。</div>'; }
+    else if(err && err.indexOf('model-')===0){ if(f)f.innerHTML='<div class="practice-feedbk no"><span class="verdict">离线语音模型准备失败</span><br>首次使用需联网下载约 40MB 模型，请检查网络后重试。</div>'; }
     else { showSelfCheck(); }
   }));
 }
