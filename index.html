@@ -551,11 +551,9 @@ body {
   .tab-btn { padding: 10px 14px; font-size: 0.82rem; }
   .main { padding: 16px 12px 80px; }
 }
-/* PC（宽屏）：删除单独占行的 logo，导航栏直接作为顶栏 */
-@media (min-width: 641px) {
-  .header-inner { display: none; }
-  .tab-nav { padding-top: 6px; padding-bottom: 2px; }
-}
+/* 仅桌面 exe（Electron）：删除单独占行的 logo，导航栏直接作为顶栏；网页版保留 logo */
+html.is-electron .header-inner { display: none; }
+html.is-electron .tab-nav { padding-top: 6px; padding-bottom: 2px; }
 /* ===== 数字发音页面样式 ===== */
 .numbers-section { margin-bottom: 32px; }
 .numbers-section h3 {
@@ -872,6 +870,8 @@ button.play-icon, button.vocab-play { border: none; cursor: pointer; font-family
 <div class="score-banner" id="scoreBanner"></div>
 
 <script>
+// 桌面 exe 检测：Electron 环境下给 <html> 加 is-electron，隐藏单独占行的 logo（网页版不受影响）
+try { if (/Electron\//i.test(navigator.userAgent)) document.documentElement.classList.add('is-electron'); } catch (e) {}
 // ==================== DATA ====================
 
 const scenarios = [
