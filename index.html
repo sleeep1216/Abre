@@ -2492,7 +2492,7 @@ function renderAlphabet() {
           <div class="example-cn">${l.cn}</div>
           <div class="play-icon-row">
             <button class="speed-btn" onclick="speak('${jsAttr(l.example)}', 1)" title="正常速度">1<span class="sx">×</span></button>
-            <button class="speed-btn slow" onclick="speak('${jsAttr(l.example)}', 0.5)" title="慢速">0.5<span class="sx">×</span></button>
+            <button class="speed-btn slow" onclick="speak('${jsAttr(l.example)}', 0.7)" title="慢速">0.7<span class="sx">×</span></button>
           </div>
         </div>`;
     });
@@ -2545,7 +2545,7 @@ function renderNumbers() {
         <input type="number" id="numInput" inputmode="numeric" placeholder="输入数字，如 2500" oninput="convertirNumero()" style="width:100%;box-sizing:border-box;padding:12px 14px;font-size:1.1rem;border:1px solid var(--border,#ddd);border-radius:10px;outline:none;" />
         <div id="numResult" style="margin:14px 0;min-height:28px;font-size:1.2rem;font-weight:600;word-break:break-word;">输入一个数字，查看西语拼写并朗读</div>
         <button class="speed-btn" id="numSpeakBtn" onclick="speakNumero(1)" disabled>1<span class="sx">×</span></button>
-        <button class="speed-btn slow" id="numSpeakSlowBtn" onclick="speakNumero(0.5)" disabled style="margin-left:8px;">0.5<span class="sx">×</span></button>
+        <button class="speed-btn slow" id="numSpeakSlowBtn" onclick="speakNumero(0.7)" disabled style="margin-left:8px;">0.7<span class="sx">×</span></button>
         <div style="margin-top:10px;font-size:0.78rem;color:var(--text-light,#999);line-height:1.5;">支持 0 – 999,999,999,999。给出的是阳性形式；阴性名词前 doscientos→doscientas、veintiún→veintiuna 需自行调整。</div>
       </div>
     </div>`;
@@ -2562,7 +2562,7 @@ function renderNumbers() {
         <div class="cn">${n.cn}</div>
         <div class="play-icon-row">
           <button class="speed-btn" onclick="speak('${jsAttr(n.word)}', 1)" title="正常速度">1<span class="sx">×</span></button>
-          <button class="speed-btn slow" onclick="speak('${jsAttr(n.word)}', 0.5)" title="慢速">0.5<span class="sx">×</span></button>
+          <button class="speed-btn slow" onclick="speak('${jsAttr(n.word)}', 0.7)" title="慢速">0.7<span class="sx">×</span></button>
         </div>
       </div>`;
   });
@@ -2593,7 +2593,7 @@ function renderNumbers() {
         <div class="cn">${n.cn}</div>
         <div class="play-icon-row">
           <button class="speed-btn" onclick="speak('${jsAttr(n.word)}', 1)" title="正常速度">1<span class="sx">×</span></button>
-          <button class="speed-btn slow" onclick="speak('${jsAttr(n.word)}', 0.5)" title="慢速">0.5<span class="sx">×</span></button>
+          <button class="speed-btn slow" onclick="speak('${jsAttr(n.word)}', 0.7)" title="慢速">0.7<span class="sx">×</span></button>
         </div>
       </div>`;
   });
@@ -2611,7 +2611,7 @@ function renderNumbers() {
         <div class="cn">${n.cn}</div>
         <div class="play-icon-row">
           <button class="speed-btn" onclick="speak('${jsAttr(n.word)}', 1)" title="正常速度">1<span class="sx">×</span></button>
-          <button class="speed-btn slow" onclick="speak('${jsAttr(n.word)}', 0.5)" title="慢速">0.5<span class="sx">×</span></button>
+          <button class="speed-btn slow" onclick="speak('${jsAttr(n.word)}', 0.7)" title="慢速">0.7<span class="sx">×</span></button>
         </div>
       </div>`;
   });
@@ -2629,7 +2629,7 @@ function renderNumbers() {
         <div class="cn">${n.cn}</div>
         <div class="play-icon-row">
           <button class="speed-btn" onclick="speak('${jsAttr(n.word)}', 1)" title="正常速度">1<span class="sx">×</span></button>
-          <button class="speed-btn slow" onclick="speak('${jsAttr(n.word)}', 0.5)" title="慢速">0.5<span class="sx">×</span></button>
+          <button class="speed-btn slow" onclick="speak('${jsAttr(n.word)}', 0.7)" title="慢速">0.7<span class="sx">×</span></button>
         </div>
       </div>`;
   });
@@ -2718,7 +2718,7 @@ function renderVocabGrid() {
           <div class="vocab-word">${w.es}</div>
           <div class="vocab-cn">${w.cn}</div>
         </div>
-        <div style="display:flex;gap:6px;"><button class="speed-btn" onclick="event.stopPropagation();speak('${jsAttr(w.es)}', 1)" title="正常速度">1<span class="sx">×</span></button><button class="speed-btn slow" onclick="event.stopPropagation();speak('${jsAttr(w.es)}', 0.5)" title="慢速">0.5<span class="sx">×</span></button></div>
+        <div style="display:flex;gap:6px;"><button class="speed-btn" onclick="event.stopPropagation();speak('${jsAttr(w.es)}', 1)" title="正常速度">1<span class="sx">×</span></button><button class="speed-btn slow" onclick="event.stopPropagation();speak('${jsAttr(w.es)}', 0.7)" title="慢速">0.7<span class="sx">×</span></button></div>
       </div>
     `).join('');
   }
@@ -2774,7 +2774,7 @@ function translateText() {
         <div style="margin-bottom:6px;color:var(--text-light);font-size:0.8rem;">${hasChinese ? '中文 → 西班牙语' : 'Español → 中文'}</div>
         <div style="font-size:1.1rem;font-weight:500;">${esc(translated)}</div>
         <button class="speed-btn" style="margin-top:8px;" onclick="speak('${jsAttr(translated)}', 1)">1<span class="sx">×</span></button>
-        <button class="speed-btn slow" style="margin-top:8px;margin-left:8px;" onclick="speak('${jsAttr(translated)}', 0.5)">0.5<span class="sx">×</span></button>
+        <button class="speed-btn slow" style="margin-top:8px;margin-left:8px;" onclick="speak('${jsAttr(translated)}', 0.7)">0.7<span class="sx">×</span></button>
       `;
     })
     .catch(err => {
@@ -2795,7 +2795,7 @@ function rpTranslate(){
     .then(t => {
       res.innerHTML = '<div style="font-size:1.15rem;font-weight:600;color:var(--primary);word-break:break-word;">' + esc(t) + '</div>'
         + '<button class="speed-btn" style="margin-top:10px;" onclick="speak(\'' + jsAttr(t) + '\', 1)">1<span class="sx">×</span></button>'
-        + '<button class="speed-btn slow" style="margin-top:10px;margin-left:8px;" onclick="speak(\'' + jsAttr(t) + '\', 0.5)">0.5<span class="sx">×</span></button>';
+        + '<button class="speed-btn slow" style="margin-top:10px;margin-left:8px;" onclick="speak(\'' + jsAttr(t) + '\', 0.7)">0.7<span class="sx">×</span></button>';
     })
     .catch(e => { res.innerHTML = '<span style="color:var(--secondary)">' + esc(e.message || '翻译服务暂时不可用，请稍后重试') + '</span>'; });
 }
@@ -2856,7 +2856,7 @@ function renderRpChat() {
           <div class="chat-cn">${line.cn}</div>
           <div class="chat-actions">
             <button class="speed-btn" onclick="speak('${jsAttr(line.es)}', 1)">1<span class="sx">×</span></button>
-            <button class="speed-btn slow" onclick="speak('${jsAttr(line.es)}', 0.5)">0.5<span class="sx">×</span></button>
+            <button class="speed-btn slow" onclick="speak('${jsAttr(line.es)}', 0.7)">0.7<span class="sx">×</span></button>
           </div>
         </div>
       </div>`;
@@ -2876,7 +2876,7 @@ function renderRpChat() {
               <div class="chat-cn">${currentLine.cn}</div>
               <div class="chat-actions">
                 <button class="speed-btn" onclick="speak('${jsAttr(currentLine.es)}', 1)">1<span class="sx">×</span></button>
-                <button class="speed-btn slow" onclick="speak('${jsAttr(currentLine.es)}', 0.5)">0.5<span class="sx">×</span></button>
+                <button class="speed-btn slow" onclick="speak('${jsAttr(currentLine.es)}', 0.7)">0.7<span class="sx">×</span></button>
               </div>
             </div>
           </div>`;
@@ -3040,7 +3040,7 @@ function renderDetailContent(scenario) {
           <div class="sentence-cn">${line.cn}</div>
           <div class="sentence-actions">
             <button class="speed-btn" onclick="event.stopPropagation();speak('${jsAttr(line.es)}', 1)">1<span class="sx">×</span></button>
-            <button class="speed-btn slow" onclick="event.stopPropagation();speak('${jsAttr(line.es)}', 0.5)">0.5<span class="sx">×</span></button>
+            <button class="speed-btn slow" onclick="event.stopPropagation();speak('${jsAttr(line.es)}', 0.7)">0.7<span class="sx">×</span></button>
             ${hasGrammar ? `<button class="sentence-btn" onclick="event.stopPropagation();toggleGrammar(${di},${li})">&#129513; 语法拆解</button>` : ''}
             ${hasSwap ? `<button class="sentence-btn" onclick="event.stopPropagation();toggleSwap(${di},${li})">&#128260; 换词造句</button>` : ''}
             ${hasPractice ? `<button class="sentence-btn" onclick="event.stopPropagation();togglePractice(${di},${li})">&#9999;&#65039; 练习</button>` : ''}
@@ -3073,7 +3073,7 @@ function renderAltRegion(alt) {
       <span class="alt-es">${esc(alt.es)}</span>
       ${alt.note ? `<span class="alt-note">（${esc(alt.note)}）</span>` : ''}
       <button class="speed-btn" onclick="speak('${jsAttr(alt.es)}', 1)">1<span class="sx">×</span></button>
-      <button class="speed-btn slow" onclick="speak('${jsAttr(alt.es)}', 0.5)">0.5<span class="sx">×</span></button>
+      <button class="speed-btn slow" onclick="speak('${jsAttr(alt.es)}', 0.7)">0.7<span class="sx">×</span></button>
     </div>`;
 }
 
@@ -3141,7 +3141,7 @@ function selectSwap(di, li, oi, key) {
   });
   const result = document.getElementById(`swap-result-${di}-${li}`);
   const opt = data.options[oi];
-  result.innerHTML = `${opt.result} <button class="speed-btn" style="margin-left:8px;" onclick="event.stopPropagation();speak('${jsAttr(opt.result)}', 1)">1<span class="sx">×</span></button> <button class="speed-btn slow" onclick="event.stopPropagation();speak('${jsAttr(opt.result)}', 0.5)">0.5<span class="sx">×</span></button>`;
+  result.innerHTML = `${opt.result} <button class="speed-btn" style="margin-left:8px;" onclick="event.stopPropagation();speak('${jsAttr(opt.result)}', 1)">1<span class="sx">×</span></button> <button class="speed-btn slow" onclick="event.stopPropagation();speak('${jsAttr(opt.result)}', 0.7)">0.7<span class="sx">×</span></button>`;
 }
 
 function renderPracticePanel(di, li, practice) {
@@ -3379,12 +3379,12 @@ function renderRegionGuide() {
         <div class="side-es">
           <span class="side-label">&#127466;&#127480; 西班牙</span>${item.es}
           <button class="speed-btn" style="margin-top:6px;" onclick="speak('${jsAttr(item.es)}', 1)" title="正常速度">1<span class="sx">×</span></button>
-          <button class="speed-btn slow" style="margin-top:6px;margin-left:6px;" onclick="speak('${jsAttr(item.es)}', 0.5)" title="慢速">0.5<span class="sx">×</span></button>
+          <button class="speed-btn slow" style="margin-top:6px;margin-left:6px;" onclick="speak('${jsAttr(item.es)}', 0.7)" title="慢速">0.7<span class="sx">×</span></button>
         </div>
         <div class="side-latam">
           <span class="side-label">&#127758; 拉美</span>${item.latam}
           <button class="speed-btn" style="margin-top:6px;" onclick="speak('${jsAttr(item.latam)}', 1)" title="正常速度">1<span class="sx">×</span></button>
-          <button class="speed-btn slow" style="margin-top:6px;margin-left:6px;" onclick="speak('${jsAttr(item.latam)}', 0.5)" title="慢速">0.5<span class="sx">×</span></button>
+          <button class="speed-btn slow" style="margin-top:6px;margin-left:6px;" onclick="speak('${jsAttr(item.latam)}', 0.7)" title="慢速">0.7<span class="sx">×</span></button>
         </div>
       </div>
       ${item.note ? `<p>${item.note}</p>` : ''}
@@ -3609,7 +3609,7 @@ function renderLifeRead(fb){
     <div class="practice-actions" style="margin-top:16px;">
       <button class="mic-btn" id="micBtn" onclick="startLifeRead()">&#127908; 开始朗读</button>
       <button class="speed-btn" onclick="speak('${jsAttr(t.es)}',1)">1<span class="sx">×</span></button>
-      <button class="speed-btn slow" onclick="speak('${jsAttr(t.es)}',0.5)">0.5<span class="sx">×</span></button>
+      <button class="speed-btn slow" onclick="speak('${jsAttr(t.es)}',0.7)">0.7<span class="sx">×</span></button>
     </div>
     <div id="lifeFeedback">${fb||''}</div>
     <div class="practice-actions"><button class="sentence-btn" onclick="nextLife()">下一句 &rarr;</button></div>
@@ -3623,7 +3623,7 @@ function startLifeRead(){
       const f=document.getElementById('lifeFeedback');
       if(err==='not-allowed'||err==='service-not-allowed'){ if(f)f.innerHTML='<div class="practice-feedbk no"><span class="verdict">需要麦克风权限</span></div>'; }
       else if(err==='no-speech'){ if(f)f.innerHTML='<div class="practice-feedbk no"><span class="verdict">没听清，请再读一次</span></div>'; }
-      else { if(f)f.innerHTML='<div class="practice-feedbk no"><span class="verdict">当前环境不支持语音识别</span><br>请用 1× / 0.5× 听标准发音跟读。</div>'; }
+      else { if(f)f.innerHTML='<div class="practice-feedbk no"><span class="verdict">当前环境不支持语音识别</span><br>请用 1× / 0.7× 听标准发音跟读。</div>'; }
     });
 }
 function judgeLifeRead(alts){
@@ -3632,7 +3632,7 @@ function judgeLifeRead(alts){
   (alts||[]).forEach(a=>{ const hw=new Set(pnorm(a).split(' ').filter(Boolean)); let m=0; tw.forEach(w=>{ if(hw.has(w))m++; }); const r=tw.length?m/tw.length:0; if(r>best){ best=r; heard=a; } });
   lTotal++;
   if(best>=0.6){ lOK++; renderLifeRead(`<div class="practice-feedbk ok"><span class="verdict">&#10003; 很好！</span><br>识别到：「${esc(heard||(alts&&alts[0])||'')}」</div>`); }
-  else { renderLifeRead(`<div class="practice-feedbk no"><span class="verdict">${best>=0.4?'≈ 接近了':'✗ 再试一次'}</span><br>我听到的是：「${esc((alts&&alts[0])||'（未识别到）')}」<br>正确：${esc(t.es)}<br><button class="speed-btn slow" style="margin-top:8px;" onclick="speak('${jsAttr(t.es)}',0.5)">0.5<span class="sx">×</span> 听正确发音</button></div>`); }
+  else { renderLifeRead(`<div class="practice-feedbk no"><span class="verdict">${best>=0.4?'≈ 接近了':'✗ 再试一次'}</span><br>我听到的是：「${esc((alts&&alts[0])||'（未识别到）')}」<br>正确：${esc(t.es)}<br><button class="speed-btn" style="margin-top:8px;" onclick="speak('${jsAttr(t.es)}',1)">1<span class="sx">×</span></button> <button class="speed-btn slow" style="margin-top:8px;" onclick="speak('${jsAttr(t.es)}',0.7)">0.7<span class="sx">×</span> 听正确发音</button></div>`); }
 }
 
 // 中译西 拼句
@@ -3661,7 +3661,7 @@ function lifeUnpick(idx){ const it=lifeAnswer[idx]; if(!it)return; if(lifeBank[i
 function checkLifeAssemble(){
   const t=lifeTarget; const got=pnorm(lifeAnswer.map(x=>x.w).join(' ')), want=pnorm(t.es); lTotal++;
   if(got===want){ lOK++; renderLifeAssemble(`<div class="practice-feedbk ok"><span class="verdict">&#10003; 正确！</span>　<button class="speed-btn" onclick="speak('${jsAttr(t.es)}',1)">1<span class="sx">×</span></button></div>`,false); }
-  else { renderLifeAssemble(`<div class="practice-feedbk no"><span class="verdict">✗ 不对</span><br>正确：${esc(t.es)}　<button class="speed-btn slow" onclick="speak('${jsAttr(t.es)}',0.5)">0.5<span class="sx">×</span></button></div>`,false); }
+  else { renderLifeAssemble(`<div class="practice-feedbk no"><span class="verdict">✗ 不对</span><br>正确：${esc(t.es)}　<button class="speed-btn" onclick="speak('${jsAttr(t.es)}',1)">1<span class="sx">×</span></button> <button class="speed-btn slow" onclick="speak('${jsAttr(t.es)}',0.7)">0.7<span class="sx">×</span></button></div>`,false); }
 }
 
 // 西译中 选择
@@ -3675,7 +3675,7 @@ function renderLifeMC(){
     <div class="life-prompt"><span class="big">${esc(t.es)}</span></div>
     <div class="practice-actions" style="margin:4px 0 14px;">
       <button class="speed-btn" onclick="speak('${jsAttr(t.es)}',1)">1<span class="sx">×</span></button>
-      <button class="speed-btn slow" onclick="speak('${jsAttr(t.es)}',0.5)">0.5<span class="sx">×</span></button>
+      <button class="speed-btn slow" onclick="speak('${jsAttr(t.es)}',0.7)">0.7<span class="sx">×</span></button>
     </div>
     <div id="lifeMCOpts">${opts.map(o=>`<button class="mc-option" onclick="pickLifeMC(this,'${jsAttr(o)}')">${esc(o)}</button>`).join('')}</div>
     <div id="lifeFeedback"></div>
@@ -3736,7 +3736,7 @@ function renderPracticeCard(feedbackHtml){
       <div class="practice-actions">
         <button class="mic-btn" id="micBtn" onclick="startListen()">&#127908; 开始朗读</button>
         <button class="speed-btn" onclick="speak('${jsAttr(listen)}', 1)" title="听标准发音">1<span class="sx">×</span></button>
-        <button class="speed-btn slow" onclick="speak('${jsAttr(listen)}', 0.5)" title="慢速">0.5<span class="sx">×</span></button>
+        <button class="speed-btn slow" onclick="speak('${jsAttr(listen)}', 0.7)" title="慢速">0.7<span class="sx">×</span></button>
       </div>
       <div id="practiceFeedback">${feedbackHtml||''}</div>
       <div class="practice-actions"><button class="sentence-btn" onclick="nextPractice()">下一个 &rarr;</button></div>
@@ -3779,14 +3779,14 @@ function judgePractice(alts){
     pStreak=0; addWrong(currentWrongItem());
     const tip = practiceMode==='letter' ? (LETTER_HINTS[t.letter.toLowerCase()]||'对照标准发音，注意口型与重音，放慢速度跟读。') : '注意重音位置，放慢速度，逐音节跟读。';
     const correctLabel = practiceMode==='letter' ? `字母 <b>${t.letter}</b>　发音 ${t.phonetic}　例词 ${t.example}` : `<b>${t.word}</b>（${t.digit}）`;
-    renderPracticeCard(`<div class="practice-feedbk no"><span class="verdict">${close?'≈ 接近了，再试一次':'✗ 不太对'}</span><br>我听到的是：「${esc(heardShow)}」<br>正确：${correctLabel}<br>纠正提示：${tip}<br><button class="speed-btn slow" style="margin-top:8px;" onclick="speak('${jsAttr(listen)}', 0.5)">0.5<span class="sx">×</span> 听正确发音</button></div>`);
+    renderPracticeCard(`<div class="practice-feedbk no"><span class="verdict">${close?'≈ 接近了，再试一次':'✗ 不太对'}</span><br>我听到的是：「${esc(heardShow)}」<br>正确：${correctLabel}<br>纠正提示：${tip}<br><button class="speed-btn" style="margin-top:8px;" onclick="speak('${jsAttr(listen)}', 1)">1<span class="sx">×</span></button> <button class="speed-btn slow" style="margin-top:8px;" onclick="speak('${jsAttr(listen)}', 0.7)">0.7<span class="sx">×</span> 听正确发音</button></div>`);
   }
 }
 function showSelfCheck(){
   const t=practiceTarget; const listen=practiceMode==='letter'?t.letter:t.word; const f=document.getElementById('practiceFeedback'); if(!f)return;
   f.innerHTML=`<div class="practice-feedbk no"><span class="verdict">当前环境不支持语音识别</span><br>请先听标准发音，再自我判断是否读对：<br>
     <button class="speed-btn" style="margin-top:8px;" onclick="speak('${jsAttr(listen)}',1)">1<span class="sx">×</span> 听发音</button>
-    <button class="speed-btn slow" style="margin-top:8px;margin-left:6px;" onclick="speak('${jsAttr(listen)}',0.5)">0.5<span class="sx">×</span> 慢速</button>
+    <button class="speed-btn slow" style="margin-top:8px;margin-left:6px;" onclick="speak('${jsAttr(listen)}',0.7)">0.7<span class="sx">×</span> 慢速</button>
     <div style="margin-top:10px;"><button class="sentence-btn" onclick="selfMark(true)">&#10003; 我读对了</button> <button class="sentence-btn" onclick="selfMark(false)">&#10007; 再试一次</button></div></div>`;
 }
 function selfMark(ok){ pTotal++; if(ok){ pOK++; pStreak++; nextPractice(); } else { pStreak=0; addWrong(currentWrongItem()); renderPracticeCard('<div class="practice-feedbk no"><span class="verdict">继续加油</span><br>多听几遍标准发音，放慢跟读。</div>'); } }
@@ -3824,7 +3824,7 @@ function wbRow(w){
       <div class="wb-meta">${w.phon?`<span class="wb-phon">${esc(w.phon)}</span>　`:''}<span class="wb-count">错 ${w.count||1} 次</span></div>
       <div class="practice-actions" style="justify-content:flex-start;margin-top:8px;">
         <button class="speed-btn" onclick="event.stopPropagation();speak('${jsAttr(w.speak)}',1)">1<span class="sx">×</span></button>
-        <button class="speed-btn slow" onclick="event.stopPropagation();speak('${jsAttr(w.speak)}',0.5)">0.5<span class="sx">×</span></button>
+        <button class="speed-btn slow" onclick="event.stopPropagation();speak('${jsAttr(w.speak)}',0.7)">0.7<span class="sx">×</span></button>
         <button class="sentence-btn" onclick="event.stopPropagation();toggleMastered('${w.type}','${jsAttr(w.key)}')">${w.mastered?'移回未掌握':'标记已掌握 &#10003;'}</button>
         <button class="sentence-btn" onclick="event.stopPropagation();removeWrong('${w.type}','${jsAttr(w.key)}')">删除</button>
       </div>
