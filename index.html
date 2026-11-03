@@ -832,8 +832,8 @@ button.play-icon, button.vocab-play { border: none; cursor: pointer; font-family
 <div id="tab-roleplay" class="tab-content">
   <div class="section-title">对话示范</div>
   <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:24px;box-shadow:var(--shadow);">
-    <div style="font-weight:600;margin-bottom:10px;">翻译 Traductor（中文 → 西班牙语）</div>
-    <textarea id="rpTransInput" rows="2" placeholder="输入中文，例如：这个多少钱？" style="width:100%;box-sizing:border-box;padding:12px 14px;font-size:1rem;border:1px solid var(--border);border-radius:10px;outline:none;resize:vertical;font-family:var(--font);background:var(--bg);color:var(--text);"></textarea>
+    <div style="font-weight:600;margin-bottom:10px;">翻译 Traductor（中 ⇄ 西，自动判断方向）</div>
+    <textarea id="rpTransInput" rows="2" placeholder="输入中文或西班牙语（自动判断方向），例如：这个多少钱？ / ¿Cuánto cuesta?" style="width:100%;box-sizing:border-box;padding:12px 14px;font-size:1rem;border:1px solid var(--border);border-radius:10px;outline:none;resize:vertical;font-family:var(--font);background:var(--bg);color:var(--text);"></textarea>
     <button class="sentence-btn" style="margin-top:10px;" onclick="rpTranslate()">&#128260; 翻译</button>
     <div id="rpTransResult" style="margin-top:14px;min-height:24px;"></div>
   </div>
@@ -2422,6 +2422,21 @@ function lookupKey(dict, es) {
 
 // ==================== SPEECH SYNTHESIS ====================
 
+// 按指定语言朗读（中文用 zh-CN，西语用 es-AR）
+function speakL(text, lang, rate = 1) {
+  if (!('speechSynthesis' in window)) { showBanner('您的浏览器不支持语音合成功能'); return; }
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = lang || 'es-AR';
+  utter.rate = rate; utter.pitch = 1;
+  try {
+    const voices = window.speechSynthesis.getVoices();
+    const base = (lang || 'es').slice(0, 2);
+    const v = voices.find(x => x.lang && x.lang.toLowerCase().startsWith(base));
+    if (v) utter.voice = v;
+  } catch (e) {}
+  window.speechSynthesis.speak(utter);
+}
 function speak(text, rate = 1) {
   if (!('speechSynthesis' in window)) {
     showBanner('您的浏览器不支持语音合成功能');
@@ -2783,19 +2798,34 @@ function translateText() {
 }
 
 // 对话示范页：中文 → 西班牙语 翻译 + 朗读
+// 一行：原文/译文 + 语言标签 + 1× / 0.7× 朗读（中文用 zh-CN，西语用 es-AR）
+function transRow(label, text, lang){
+  const voice = lang==='zh' ? 'zh-CN' : 'es-AR';
+  const color = lang==='zh' ? 'var(--text)' : 'var(--primary)';
+  return '<div style="margin-top:12px;">'
+    + '<div style="font-size:0.78rem;color:var(--text-light);margin-bottom:4px;">'+label+'</div>'
+    + '<div style="font-size:1.1rem;font-weight:600;color:'+color+';word-break:break-word;">'+esc(text)+'</div>'
+    + '<button class="speed-btn" style="margin-top:8px;" onclick="speakL(\''+jsAttr(text)+'\',\''+voice+'\',1)">1<span class="sx">×</span></button>'
+    + '<button class="speed-btn slow" style="margin-top:8px;margin-left:8px;" onclick="speakL(\''+jsAttr(text)+'\',\''+voice+'\',0.7)">0.7<span class="sx">×</span></button>'
+    + '</div>';
+}
 function rpTranslate(){
   const input = (document.getElementById('rpTransInput').value || '').trim();
   const res = document.getElementById('rpTransResult');
-  if(!input){ res.innerHTML = '<span style="color:var(--text-light)">请输入要翻译的中文</span>'; return; }
+  if(!input){ res.innerHTML = '<span style="color:var(--text-light)">请输入中文或西班牙语</span>'; return; }
   if(new TextEncoder().encode(input).length > TRANSLATE_MAX_BYTES){
     res.innerHTML = '<span style="color:var(--secondary)">单次最多约 160 个汉字，请分段翻译</span>'; return;
   }
+  // 自动判断：含中文字符 → 中译西；否则 → 西译中
+  const hasZh = /[一-鿿]/.test(input);
+  const srcLang = hasZh ? 'zh' : 'es';
+  const tgtLang = hasZh ? 'es' : 'zh';
   res.innerHTML = '<span style="color:var(--text-light)">翻译中...</span>';
-  tryTranslate(input, 'zh', 'es')
+  tryTranslate(input, srcLang, tgtLang)
     .then(t => {
-      res.innerHTML = '<div style="font-size:1.15rem;font-weight:600;color:var(--primary);word-break:break-word;">' + esc(t) + '</div>'
-        + '<button class="speed-btn" style="margin-top:10px;" onclick="speak(\'' + jsAttr(t) + '\', 1)">1<span class="sx">×</span></button>'
-        + '<button class="speed-btn slow" style="margin-top:10px;margin-left:8px;" onclick="speak(\'' + jsAttr(t) + '\', 0.7)">0.7<span class="sx">×</span></button>';
+      res.innerHTML = '<div style="font-size:0.8rem;color:var(--text-light);">'+(hasZh?'中文 → 西班牙语':'西班牙语 → 中文')+'</div>'
+        + transRow(hasZh?'原文（中文）':'原文（西语）', input, srcLang)
+        + transRow(hasZh?'译文（西语）':'译文（中文）', t, tgtLang);
     })
     .catch(e => { res.innerHTML = '<span style="color:var(--secondary)">' + esc(e.message || '翻译服务暂时不可用，请稍后重试') + '</span>'; });
 }
