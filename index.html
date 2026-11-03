@@ -551,6 +551,11 @@ body {
   .tab-btn { padding: 10px 14px; font-size: 0.82rem; }
   .main { padding: 16px 12px 80px; }
 }
+/* PC（宽屏）：删除单独占行的 logo，导航栏直接作为顶栏 */
+@media (min-width: 641px) {
+  .header-inner { display: none; }
+  .tab-nav { padding-top: 6px; padding-bottom: 2px; }
+}
 /* ===== 数字发音页面样式 ===== */
 .numbers-section { margin-bottom: 32px; }
 .numbers-section h3 {
