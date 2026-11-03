@@ -775,7 +775,7 @@ button.play-icon, button.vocab-play { border: none; cursor: pointer; font-family
     <div class="section-title" style="margin-bottom:0;">错题本</div>
     <button class="sentence-btn" id="wbClearBtn" onclick="clearWrongBook()" style="display:none;">清空错题本</button>
   </div>
-  <p style="font-size:0.85rem;color:var(--text-light);margin:12px 0 20px;">练习中答错的字母 / 数字会自动记录，点击错题可展开听读音</p>
+  <p style="font-size:0.85rem;color:var(--text-light);margin:12px 0 20px;">练习中答错的字母 / 数字 / 句子会自动记录，点击错题可展开听读音</p>
   <div id="wrongbookContent"></div>
 </div>
 
@@ -3446,6 +3446,7 @@ const BIG_NUMS=[1500,2500,4500,8000,12500,15000,25000,38000,55000,90000,120000,2
 function bigNumberPool(){ return BIG_NUMS.map(v=>({digit:Number(v).toLocaleString('es-AR'),word:numeroATexto(v),cn:'约 '+Number(v).toLocaleString('es-AR')+' 比索',big:true})); }
 
 let _recognizing=false;
+let _recognizer=null;
 // 先重绘「聆听中」再启动识别：双 rAF 回退到 setTimeout，确保状态可见
 function deferStt(fn){
   if(typeof requestAnimationFrame==='function'){ requestAnimationFrame(()=>requestAnimationFrame(fn)); }
@@ -3455,7 +3456,7 @@ window.__sttDone=null;
 function sttStart(lang, onResult, onError){
   if(_recognizing) return;
   _recognizing=true;
-  window.__sttDone=(ok,payload)=>{ _recognizing=false; const f=window.__sttDone; window.__sttDone=null; if(ok)onResult(payload); else onError(payload); };
+  window.__sttDone=(ok,payload)=>{ _recognizing=false; _recognizer=null; window.__sttDone=null; if(ok)onResult(payload); else onError(payload); };
   if(window.AndroidSTT && window.AndroidSTT.start){
     try{ window.AndroidSTT.start(lang||'es-AR'); }catch(e){ if(window.__sttDone)window.__sttDone(false,'native-error'); }
     return;
@@ -3464,12 +3465,17 @@ function sttStart(lang, onResult, onError){
   if(!SR){ if(window.__sttDone)window.__sttDone(false,'unsupported'); return; }
   try{
     const r=new SR(); r.lang=lang||'es-AR'; r.interimResults=false; r.maxAlternatives=5; r.continuous=false;
+    _recognizer=r;
     let got=false;
     r.onresult=e=>{ got=true; const a=[]; const res=e.results[0]; for(let i=0;i<res.length;i++)a.push(res[i].transcript); if(window.__sttDone)window.__sttDone(true,a); };
     r.onerror=e=>{ if(window.__sttDone)window.__sttDone(false,(e&&e.error)||'error'); };
     r.onend=()=>{ if(!got && window.__sttDone)window.__sttDone(false,'no-speech'); };
     r.start();
   }catch(e){ if(window.__sttDone)window.__sttDone(false,'start-fail'); }
+}
+// 主动结束聆听：停止识别并对已采集到的语音判分（无语音则走 no-speech）
+function sttStop(){
+  try{ if(window.AndroidSTT && window.AndroidSTT.stop){ window.AndroidSTT.stop(); } else if(_recognizer){ _recognizer.stop(); } }catch(e){}
 }
 // Android 原生识别回调
 window.__onSTTResult=function(json){ try{ const a=JSON.parse(json); if(window.__sttDone)window.__sttDone(true,a); }catch(e){ if(window.__sttDone)window.__sttDone(true,[String(json)]); } };
@@ -3621,8 +3627,9 @@ function renderLifeRead(fb){
   </div>`;
 }
 function startLifeRead(){
+  if(_recognizing){ sttStop(); return; }   // 聆听中再次点击 = 结束聆听
   const btn=document.getElementById('micBtn'), fb=document.getElementById('lifeFeedback');
-  if(fb)fb.innerHTML=''; if(btn){ btn.classList.add('recording'); btn.innerHTML='&#127908; 聆听中…'; }
+  if(fb)fb.innerHTML=''; if(btn){ btn.classList.add('recording'); btn.innerHTML='&#9209;&#65039; 结束聆听'; }
   // 先让「聆听中」渲染出来，再启动识别（否则同步报错时用户看不到状态）
   deferStt(()=>sttStart('es-AR', alts=>{ if(btn){ btn.classList.remove('recording'); btn.innerHTML='&#127908; 再读一次'; } judgeLifeRead(alts); },
     err=>{ if(btn){ btn.classList.remove('recording'); btn.innerHTML='&#127908; 开始朗读'; }
@@ -3749,9 +3756,10 @@ function renderPracticeCard(feedbackHtml){
     </div>`;
 }
 function startListen(){
+  if(_recognizing){ sttStop(); return; }   // 聆听中再次点击 = 结束聆听
   const t=practiceTarget; if(!t)return;
   const btn=document.getElementById('micBtn'); const fb=document.getElementById('practiceFeedback');
-  if(fb)fb.innerHTML=''; if(btn){ btn.classList.add('recording'); btn.innerHTML='&#127908; 聆听中…'; }
+  if(fb)fb.innerHTML=''; if(btn){ btn.classList.add('recording'); btn.innerHTML='&#9209;&#65039; 结束聆听'; }
   deferStt(()=>sttStart('es-AR', alts=>{
     if(btn){ btn.classList.remove('recording'); btn.innerHTML='&#127908; 再读一次'; }
     judgePractice(alts);
