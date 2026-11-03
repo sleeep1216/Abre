@@ -3446,6 +3446,11 @@ const BIG_NUMS=[1500,2500,4500,8000,12500,15000,25000,38000,55000,90000,120000,2
 function bigNumberPool(){ return BIG_NUMS.map(v=>({digit:Number(v).toLocaleString('es-AR'),word:numeroATexto(v),cn:'约 '+Number(v).toLocaleString('es-AR')+' 比索',big:true})); }
 
 let _recognizing=false;
+// 先重绘「聆听中」再启动识别：双 rAF 回退到 setTimeout，确保状态可见
+function deferStt(fn){
+  if(typeof requestAnimationFrame==='function'){ requestAnimationFrame(()=>requestAnimationFrame(fn)); }
+  else { setTimeout(fn, 60); }
+}
 window.__sttDone=null;
 function sttStart(lang, onResult, onError){
   if(_recognizing) return;
@@ -3618,13 +3623,14 @@ function renderLifeRead(fb){
 function startLifeRead(){
   const btn=document.getElementById('micBtn'), fb=document.getElementById('lifeFeedback');
   if(fb)fb.innerHTML=''; if(btn){ btn.classList.add('recording'); btn.innerHTML='&#127908; 聆听中…'; }
-  sttStart('es-AR', alts=>{ if(btn){ btn.classList.remove('recording'); btn.innerHTML='&#127908; 再读一次'; } judgeLifeRead(alts); },
+  // 先让「聆听中」渲染出来，再启动识别（否则同步报错时用户看不到状态）
+  deferStt(()=>sttStart('es-AR', alts=>{ if(btn){ btn.classList.remove('recording'); btn.innerHTML='&#127908; 再读一次'; } judgeLifeRead(alts); },
     err=>{ if(btn){ btn.classList.remove('recording'); btn.innerHTML='&#127908; 开始朗读'; }
       const f=document.getElementById('lifeFeedback');
-      if(err==='not-allowed'||err==='service-not-allowed'){ if(f)f.innerHTML='<div class="practice-feedbk no"><span class="verdict">需要麦克风权限</span></div>'; }
+      if(err==='not-allowed'||err==='service-not-allowed'){ if(f)f.innerHTML='<div class="practice-feedbk no"><span class="verdict">需要麦克风权限</span><br>请在浏览器地址栏允许麦克风后重试。</div>'; }
       else if(err==='no-speech'){ if(f)f.innerHTML='<div class="practice-feedbk no"><span class="verdict">没听清，请再读一次</span></div>'; }
-      else { if(f)f.innerHTML='<div class="practice-feedbk no"><span class="verdict">当前环境不支持语音识别</span><br>请用 1× / 0.7× 听标准发音跟读。</div>'; }
-    });
+      else { if(f)f.innerHTML='<div class="practice-feedbk no"><span class="verdict">当前环境不支持语音识别</span><br>语音识别需要在 Chrome 等浏览器用 https 网址打开（本地文件/部分浏览器不支持）。你仍可用 1× / 0.7× 听标准发音跟读。</div>'; }
+    }));
 }
 function judgeLifeRead(alts){
   const t=lifeTarget; const tw=pnorm(t.es).split(' ').filter(Boolean);
@@ -3746,7 +3752,7 @@ function startListen(){
   const t=practiceTarget; if(!t)return;
   const btn=document.getElementById('micBtn'); const fb=document.getElementById('practiceFeedback');
   if(fb)fb.innerHTML=''; if(btn){ btn.classList.add('recording'); btn.innerHTML='&#127908; 聆听中…'; }
-  sttStart('es-AR', alts=>{
+  deferStt(()=>sttStart('es-AR', alts=>{
     if(btn){ btn.classList.remove('recording'); btn.innerHTML='&#127908; 再读一次'; }
     judgePractice(alts);
   }, err=>{
@@ -3755,7 +3761,7 @@ function startListen(){
     if(err==='not-allowed'||err==='service-not-allowed'){ if(f)f.innerHTML='<div class="practice-feedbk no"><span class="verdict">需要麦克风权限</span><br>请在系统/浏览器中允许使用麦克风后重试。</div>'; }
     else if(err==='no-speech'){ if(f)f.innerHTML='<div class="practice-feedbk no"><span class="verdict">没听清</span><br>没有检测到声音，请靠近麦克风再读一次。</div>'; }
     else { showSelfCheck(); }
-  });
+  }));
 }
 function acceptedForms(){
   const t=practiceTarget;
