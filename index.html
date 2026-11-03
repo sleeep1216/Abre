@@ -3638,7 +3638,7 @@ function judgeLifeRead(alts){
   (alts||[]).forEach(a=>{ const hw=new Set(pnorm(a).split(' ').filter(Boolean)); let m=0; tw.forEach(w=>{ if(hw.has(w))m++; }); const r=tw.length?m/tw.length:0; if(r>best){ best=r; heard=a; } });
   lTotal++;
   if(best>=0.6){ lOK++; renderLifeRead(`<div class="practice-feedbk ok"><span class="verdict">&#10003; 很好！</span><br>识别到：「${esc(heard||(alts&&alts[0])||'')}」</div>`); }
-  else { renderLifeRead(`<div class="practice-feedbk no"><span class="verdict">${best>=0.4?'≈ 接近了':'✗ 再试一次'}</span><br>我听到的是：「${esc((alts&&alts[0])||'（未识别到）')}」<br>正确：${esc(t.es)}<br><button class="speed-btn" style="margin-top:8px;" onclick="speak('${jsAttr(t.es)}',1)">1<span class="sx">×</span></button> <button class="speed-btn slow" style="margin-top:8px;" onclick="speak('${jsAttr(t.es)}',0.7)">0.7<span class="sx">×</span> 听正确发音</button></div>`); }
+  else { addWrong(currentLifeWrong()); renderLifeRead(`<div class="practice-feedbk no"><span class="verdict">${best>=0.4?'≈ 接近了':'✗ 再试一次'}</span><br>我听到的是：「${esc((alts&&alts[0])||'（未识别到）')}」<br>正确：${esc(t.es)}<br><button class="speed-btn" style="margin-top:8px;" onclick="speak('${jsAttr(t.es)}',1)">1<span class="sx">×</span></button> <button class="speed-btn slow" style="margin-top:8px;" onclick="speak('${jsAttr(t.es)}',0.7)">0.7<span class="sx">×</span> 听正确发音</button></div>`); }
 }
 
 // 中译西 拼句
@@ -3667,7 +3667,7 @@ function lifeUnpick(idx){ const it=lifeAnswer[idx]; if(!it)return; if(lifeBank[i
 function checkLifeAssemble(){
   const t=lifeTarget; const got=pnorm(lifeAnswer.map(x=>x.w).join(' ')), want=pnorm(t.es); lTotal++;
   if(got===want){ lOK++; renderLifeAssemble(`<div class="practice-feedbk ok"><span class="verdict">&#10003; 正确！</span>　<button class="speed-btn" onclick="speak('${jsAttr(t.es)}',1)">1<span class="sx">×</span></button></div>`,false); }
-  else { renderLifeAssemble(`<div class="practice-feedbk no"><span class="verdict">✗ 不对</span><br>正确：${esc(t.es)}　<button class="speed-btn" onclick="speak('${jsAttr(t.es)}',1)">1<span class="sx">×</span></button> <button class="speed-btn slow" onclick="speak('${jsAttr(t.es)}',0.7)">0.7<span class="sx">×</span></button></div>`,false); }
+  else { addWrong(currentLifeWrong()); renderLifeAssemble(`<div class="practice-feedbk no"><span class="verdict">✗ 不对</span><br>正确：${esc(t.es)}　<button class="speed-btn" onclick="speak('${jsAttr(t.es)}',1)">1<span class="sx">×</span></button> <button class="speed-btn slow" onclick="speak('${jsAttr(t.es)}',0.7)">0.7<span class="sx">×</span></button></div>`,false); }
 }
 
 // 西译中 选择
@@ -3695,7 +3695,7 @@ function pickLifeMC(btn, chosen){
   if(!ok) btn.classList.add('wrong');
   const f=document.getElementById('lifeFeedback');
   if(ok){ lOK++; if(f)f.innerHTML='<div class="practice-feedbk ok"><span class="verdict">&#10003; 正确！</span></div>'; }
-  else { if(f)f.innerHTML=`<div class="practice-feedbk no"><span class="verdict">✗ 不对</span><br>正确意思：${esc(t.cn)}</div>`; }
+  else { addWrong(currentLifeWrong()); if(f)f.innerHTML=`<div class="practice-feedbk no"><span class="verdict">✗ 不对</span><br>正确意思：${esc(t.cn)}</div>`; }
 }
 function renderSubmode(){
   const el=document.getElementById('practiceSubmode'); if(!el)return;
@@ -3802,6 +3802,10 @@ function currentWrongItem(){
   if(practiceMode==='letter') return { type:'letter', key:t.letter, label:t.letter, speak:t.letter, phon:t.phonetic, example:t.example };
   return { type:'number', key:t.word, label:t.digit, speak:t.word, phon:'' };
 }
+function currentLifeWrong(){
+  const t=lifeTarget; if(!t) return null;
+  return { type:'sentence', key:t.es, label:t.es, speak:t.es, cn:t.cn||'', phon:'' };
+}
 
 // ==================== 错题本 Wrong-answer notebook ====================
 let wrongBook=[];
@@ -3823,7 +3827,7 @@ function wbRow(w){
   return `<div class="wb-row">
     <div class="wb-head" onclick="toggleWrong(this)">
       <span class="wb-label">${esc(w.label)}</span>
-      <span class="wb-brief">${w.type==='letter' ? ('字母 · 例词 '+esc(w.example||'')) : ('数字 · '+esc(w.speak))}</span>
+      <span class="wb-brief">${w.type==='letter' ? ('字母 · 例词 '+esc(w.example||'')) : w.type==='sentence' ? esc(w.cn||'') : ('数字 · '+esc(w.speak))}</span>
       <span class="wb-chev">&#9662;</span>
     </div>
     <div class="wb-body">
